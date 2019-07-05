@@ -13,6 +13,7 @@ const setupServer = (app) => {
  */
 const setup = (app) => {
   setupServer(app);
+  require('../src/route')(app);
 };
 
 module.exports = setup;
