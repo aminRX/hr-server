@@ -1,3 +1,13 @@
+var bodyParser = require('body-parser')
+
+/**
+ * Setup middlewares for express
+ * @param  {express} app the express app
+ */
+let setupExpressMiddlewares = (app) => {
+  app.use(bodyParser.json({ type: 'application/*+json' }))
+};
+
 /**
  * Starts the server
  * @param  {express} app the express app
@@ -13,6 +23,7 @@ const setupServer = (app) => {
  */
 const setup = (app) => {
   setupServer(app);
+  setupExpressMiddlewares(app)
   require('../src/route')(app);
 };
 
