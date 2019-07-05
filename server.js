@@ -5,6 +5,4 @@ require('dotenv').config()
 
 require('./setup/express')(app);
 
-const database = require('./setup/database');
-
 module.exports = app;
