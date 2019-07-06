@@ -1,4 +1,5 @@
 'use strict';
+const bcrypt = require('bcrypt');
 module.exports = (sequelize, DataTypes) => {
   const User = sequelize.define('User', {
     email: {
@@ -17,6 +18,10 @@ module.exports = (sequelize, DataTypes) => {
       defaultValue: false,
     }
   }, {});
+
+  User.prototype.validPassword = function (password) {
+    return bcrypt.compareSync(password, this.password);
+  };
 
   User.associate = function(models) {
     // associations can be defined here
