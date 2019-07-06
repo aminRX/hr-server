@@ -1,11 +1,36 @@
 var bodyParser = require('body-parser')
+const {User} = require('../src/model');
 
+const jwt = require('jsonwebtoken');
 /**
  * Setup middlewares for express
  * @param  {express} app the express app
  */
 let setupExpressMiddlewares = (app) => {
-  app.use(bodyParser.json({ type: 'application/*+json' }))
+  app.use(bodyParser.urlencoded({ extended: false }));
+  app.use(bodyParser.json());
+
+  app.use(function (req, res, next) {
+    if (req.path === '/' || req.path === '/v1/login') return next();
+
+    try {
+      const token = req.headers.authorization;
+      jwt.verify(token, process.env.TOKEN_KEY, function (err, payload) {
+        if (payload) {
+          User.findOne({ where: { id: payload.userId } }).then(
+            (user) => {
+              req.currentUser = user;
+              next()
+            }
+          )
+        } else {
+          res.status(400).json({ message: 'User has no permission' });
+        }
+      })
+    } catch (e) {
+      res.status(400).json({ message: 'User has no permission' });
+    }
+  })
 };
 
 /**
