@@ -16,6 +16,19 @@ module.exports.buildDto = (model) => {
   };
 };
 
+
+module.exports.buildUpdateDto = (model) => {
+  return {
+    email: model.email,
+    firstName: model.firstName,
+    lastName: model.lastName,
+    direction: model.direction,
+    birthday: model.birthday,
+    gender: model.gender,
+    archived: model.archived
+  };
+};
+
 module.exports.buildDtoWithChecks = (model) => {
   return {
     id: model.id,

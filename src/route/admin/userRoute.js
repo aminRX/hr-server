@@ -15,7 +15,8 @@ const router = (app) => {
   });
 
   app.put('/v1/admin/users/:id', (req, res) => {
-    User.update(req.body, { where: { id: req.params.id } }).then((result,user) => {
+    const userBody = userDto.buildUpdateDto(req.body);
+    User.update(userBody, { where: { id: req.params.id } }).then((result,user) => {
       res.status(200).json(result);
     });
   });
