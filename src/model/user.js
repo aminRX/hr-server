@@ -13,6 +13,27 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       notEmpty: true
     },
+    firstName: {
+      type: DataTypes.STRING
+    },
+    lastName: {
+      type: DataTypes.STRING
+    },
+    direction: {
+      type: DataTypes.STRING
+    },
+    birthday: {
+      type: DataTypes.DATE
+    },
+    gender: DataTypes.ENUM({
+      values: ['M', 'F']
+    }),
+    role: {
+      type: DataTypes.ENUM({
+        values: ['admin', 'user']
+      }),
+      defaultValue: 'user',
+    },
     archived: {
       type: DataTypes.BOOLEAN,
       defaultValue: false,
@@ -24,7 +45,7 @@ module.exports = (sequelize, DataTypes) => {
   };
 
   User.associate = function(models) {
-    User.hasOne(models.UserInfo);
+    User.hasMany(models.Check, {foreignKey: 'userId', as: 'Checks' })
   };
 
   User.beforeCreate((user, options) => {

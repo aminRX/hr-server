@@ -1,12 +1,14 @@
 var bodyParser = require('body-parser')
 const {User} = require('../src/model');
-
+var cors = require('cors');
 const jwt = require('jsonwebtoken');
+
 /**
  * Setup middlewares for express
  * @param  {express} app the express app
  */
 let setupExpressMiddlewares = (app) => {
+  app.use(cors());
   app.use(bodyParser.urlencoded({ extended: false }));
   app.use(bodyParser.json());
 
@@ -16,6 +18,7 @@ let setupExpressMiddlewares = (app) => {
     try {
       const token = req.headers.authorization;
       jwt.verify(token, process.env.TOKEN_KEY, function (err, payload) {
+        console.log(payload)
         if (payload) {
           User.findOne({ where: { id: payload.userId } }).then(
             (user) => {
@@ -38,7 +41,7 @@ let setupExpressMiddlewares = (app) => {
  * @param  {express} app the express app
  */
 const setupServer = (app) => {
-  app.set('port', process.env.PORT || 3000);
+  app.set('port', process.env.PORT || 8000);
   app.listen(app.get('port'), () => console.log(`App listening on port ${app.get('port')}!`))
 };
 
@@ -47,8 +50,8 @@ const setupServer = (app) => {
  * @param  {express} app the express app
  */
 const setup = (app) => {
-  setupServer(app);
   setupExpressMiddlewares(app)
+  setupServer(app);
   require('../src/route')(app);
 };
 
