@@ -1,4 +1,6 @@
 const {User} = require('./../model');
+const userDto = require('../dto/userDto');
+
 const jwt = require('jsonwebtoken');
 
 const router = (app) => {
@@ -20,7 +22,11 @@ const router = (app) => {
   });
 
   app.post('/v1/signup', (req, res) => {
-    User.create({ email: req.body.email, password: req.body.password }).then((user) => {
+    const userBody = userDto.buildCreateDto(req.body);
+
+    console.log(req.body);
+    console.log(userBody)
+    User.create(userBody).then((user) => {
       if(!user) {
         res.status(500).json({});
       }

@@ -13,16 +13,13 @@ let setupExpressMiddlewares = (app) => {
   app.use(bodyParser.json());
 
   app.use(function (req, res, next) {
-    if (req.path === '/' || req.path === '/v1/login') return next();
-
-    console.log(req)
+    if (req.path === '/' || req.path === '/v1/login' || req.path === '/v1/signup') return next();
     try {
       const token = req.headers.authorization;
       jwt.verify(token, process.env.TOKEN_KEY, function (err, payload) {
         if (payload) {
           User.findOne({ where: { id: payload.userId } }).then(
             (user) => {
-              console.log(user.get())
               req.currentUser = user;
               next()
             }

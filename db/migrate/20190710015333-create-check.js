@@ -8,9 +8,12 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      checkIn: {
+      day: {
         type: Sequelize.DATE,
         allowNull: false
+      },
+      checkIn: {
+        type: Sequelize.DATE
       },
       checkOut: {
         type: Sequelize.DATE

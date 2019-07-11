@@ -29,6 +29,19 @@ module.exports.buildUpdateDto = (model) => {
   };
 };
 
+
+module.exports.buildCreateDto = (model) => {
+  return {
+    email: model.email,
+    firstName: model.firstName,
+    lastName: model.lastName,
+    password: model.password,
+    direction: model.direction,
+    birthday: model.birthday,
+    gender: model.gender,
+  };
+};
+
 module.exports.buildDtoWithChecks = (model) => {
   return {
     id: model.id,

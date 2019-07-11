@@ -1,6 +1,7 @@
 'use strict';
 module.exports = (sequelize, DataTypes) => {
   const Check = sequelize.define('Check', {
+    day: DataTypes.DATE,
     checkIn: DataTypes.DATE,
     checkOut: DataTypes.DATE,
     userId: DataTypes.INTEGER
