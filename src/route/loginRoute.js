@@ -7,7 +7,7 @@ const router = (app) => {
   app.post('/v1/login', (req, res) => {
     User.findOne({ where: { email: req.body.email } }).then(function (user) {
       if (!user) {
-        res.status(200).json({ message: 'Invalid Password/Username' });
+        res.status(403).json({ message: 'Invalid Password/Username' });
       } else if (user.validPassword(req.body.password)) {
         var token = jwt.sign({ userId: user.id }, process.env.TOKEN_KEY);
         res.status(200).json({
@@ -16,8 +16,10 @@ const router = (app) => {
           role: user.role
         })
       } else {
-        res.status(200).json({ message: 'Invalid Password/Username' });
+        res.status(403).json({ message: 'Invalid Password/Username' });
       }
+    }).catch((err) => {
+      return res.status(500).json(err)
     });
   });
 
@@ -31,6 +33,8 @@ const router = (app) => {
         res.status(500).json({});
       }
       res.status(200).json(user)
+    }).catch((err) => {
+      return res.status(500).json(err)
     });
   });
 };

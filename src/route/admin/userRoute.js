@@ -6,12 +6,16 @@ const router = (app) => {
   app.get('/v1/admin/users/:id', isAdmin, (req, res) => {
     User.findOne({where: {id: req.params.id}}).then((user) => {
       res.json(userDto.buildDto(user));
+    }).catch((err) => {
+      return res.status(500).json(err)
     });
   });
 
   app.get('/v1/admin/users', isAdmin, (req, res) => {
     User.findAll({}).then((users) => {
       res.json(userDto.buildListDto(users));
+    }).catch((err) => {
+      return res.status(500).json(err)
     });
   });
 
@@ -19,6 +23,8 @@ const router = (app) => {
     const userBody = userDto.buildUpdateDto(req.body);
     User.update(userBody, { where: { id: req.params.id } }).then((result,user) => {
       res.status(200).json(result);
+    }).catch((err) => {
+      return res.status(500).json(err)
     });
   });
 
@@ -30,6 +36,8 @@ const router = (app) => {
       return Check.create(check);
     }).then((checkCreated) => {
       res.json(checkCreated)
+    }).catch((err) => {
+      return res.status(500).json(err)
     });
   });
 
@@ -38,6 +46,8 @@ const router = (app) => {
     const {id, userId} = req.params;
     Check.update(check, {where: {id, userId}}).then((user) => {
       res.json(user);
+    }).catch((err) => {
+      return res.status(500).json(err)
     });
   });
 };

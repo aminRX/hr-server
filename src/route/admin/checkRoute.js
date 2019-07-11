@@ -1,7 +1,8 @@
 const {Check} = require('./../../model');
 const checkDto = require('../../dto/checkDto');
+const isAdmin = require('../../util/auth');
 const Sequelize = require('sequelize');
-const Op = Sequelize.Op
+const Op = Sequelize.Op;
 
 const setRangeOfDate = (day) => {
   let startDay = new Date(day);
@@ -12,13 +13,15 @@ const setRangeOfDate = (day) => {
 };
 
 const router = (app) => {
-  app.get('/v1/admin/checks/:id', (req, res) => {
+  app.get('/v1/admin/checks/:id', isAdmin, (req, res) => {
     Check.findOne({where: {id: req.params.id}}).then((check) => {
       res.json(checkDto.buildDto(check));
+    }).catch((err) => {
+      return res.status(500).json(err)
     });
   });
 
-  app.get('/v1/admin/checks/', (req, res) => {
+  app.get('/v1/admin/checks/', isAdmin, (req, res) => {
     Check.findAll({
       where: {
         day: {
@@ -27,13 +30,17 @@ const router = (app) => {
       }
     }).then((checks) => {
       res.json(checkDto.buildListDto(checks));
+    }).catch((err) => {
+      return res.status(500).json(err)
     });
   });
 
-  app.put('/v1/admin/checks/:id', (req, res) => {
+  app.put('/v1/admin/checks/:id', isAdmin, (req, res) => {
     const checkBody = checkDto.buildUpdateDto(req.body);
     Check.update(checkBody, { where: { id: req.params.id } }).then((result) => {
       res.status(200).json(result);
+    }).catch((err) => {
+      return res.status(500).json(err)
     });
   });
 
@@ -43,6 +50,8 @@ const router = (app) => {
       if(!check) {
       }
       res.status(200).json(check);
+    }).catch((err) => {
+      return res.status(500).json(err)
     });
   });
 };
