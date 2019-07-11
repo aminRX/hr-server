@@ -3,7 +3,12 @@ Instalar dependencias
 npm install
 
 Crear un archivo .env para las variables de entorno.
+DB_HOST=localhost
+DB_USER=aminrx
+DB_PASS=123456
+DB_NAME=runahr
 
+TOKEN_KEY=G13qJwug7NSNuJcplNXUzzx7EVBLp1Um
 instalar de forma de global sequelize cli.
 npm install -g sequelize-cli
 
